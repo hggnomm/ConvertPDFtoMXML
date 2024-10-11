@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertPDFtoMXML", "ConvertPDFtoMXML.csproj", "{5CA60B5A-D76F-450B-A556-7E882538BABD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CA60B5A-D76F-450B-A556-7E882538BABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CA60B5A-D76F-450B-A556-7E882538BABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CA60B5A-D76F-450B-A556-7E882538BABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CA60B5A-D76F-450B-A556-7E882538BABD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {831DED97-FD9D-4CFA-A8FE-05687534A82B}
+	EndGlobalSection
+EndGlobal
