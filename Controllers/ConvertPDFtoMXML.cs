@@ -30,16 +30,15 @@ namespace ConvertPDFtoMXML.Controllers
                 file.CopyTo(stream);
             }
 
-            // Đường dẫn tới thư mục cài đặt PDFtoMusic Pro và lệnh p2mp
-            string pdfToMusicProFolder = @"C:\Program Files\PDFtoMusic Pro"; 
+            // Đường dẫn tới công cụ PDFtoMusic Pro
+            string pdfToMusicProFolder = @"C:\Program Files\PDFtoMusic Pro"; // Đảm bảo đường dẫn chính xác
             string p2mpCommand = Path.Combine(pdfToMusicProFolder, "p2mp.exe");
             string outputFilePath = Path.ChangeExtension(filePath, ".xml");
 
-            // Thực thi lệnh chuyển đổi PDF sang MusicXML bằng cách chạy p2mp
             var processInfo = new ProcessStartInfo
             {
                 FileName = p2mpCommand,
-                Arguments = $"\"{filePath}\"",  // Truyền đường dẫn file PDF
+                Arguments = $"\"{filePath}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
@@ -52,7 +51,6 @@ namespace ConvertPDFtoMXML.Controllers
                 {
                     process.StartInfo = processInfo;
 
-                    // Bắt sự kiện khi có output hoặc error
                     process.OutputDataReceived += (sender, e) =>
                     {
                         if (!string.IsNullOrEmpty(e.Data))
@@ -69,25 +67,28 @@ namespace ConvertPDFtoMXML.Controllers
                         }
                     };
 
-                    // Khởi động quá trình chuyển đổi
                     process.Start();
                     process.BeginOutputReadLine();
                     process.BeginErrorReadLine();
-
-                    // Đợi cho quá trình hoàn thành
                     process.WaitForExit();
+                }
 
-                    // Kiểm tra xem file .musicxml có tồn tại không
-                    if (System.IO.File.Exists(outputFilePath))
-                    {
-                        // Trả về file MusicXML đã chuyển đổi
-                        var musicXmlFile = System.IO.File.OpenRead(outputFilePath);
-                        return File(musicXmlFile, "application/xml", Path.GetFileName(outputFilePath));
-                    }
-                    else
-                    {
-                        return StatusCode(500, "Chuyển đổi thất bại.");
-                    }
+                // Kiểm tra xem file MusicXML có tồn tại không
+                if (System.IO.File.Exists(outputFilePath))
+                {
+                    // Đọc toàn bộ nội dung của file MusicXML vào bộ nhớ
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(outputFilePath);
+
+                    // Xóa các file tạm sau khi đã đọc nội dung
+                    System.IO.File.Delete(filePath);         // Xóa file PDF
+                    System.IO.File.Delete(outputFilePath);   // Xóa file MusicXML
+
+                    // Trả về nội dung file MusicXML dưới dạng byte[]
+                    return File(fileBytes, "application/xml", Path.GetFileName(outputFilePath));
+                }
+                else
+                {
+                    return StatusCode(500, "Chuyển đổi thất bại.");
                 }
             }
             catch (System.Exception ex)
